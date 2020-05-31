@@ -35,19 +35,24 @@ private Q_SLOTS:
     void onStartClicked();
     void onCloseClicked();
 
+public Q_SLOTS:
+    void onStandardOutput(QString newValue);
+
 private:
     void createLayout();
     void configNetwork();
-    QString currentState();
 
     WifiDialog & wifiDialog();
 
 private:
     scoped_ptr<WifiDialog> conf_dialog_;
-    QHBoxLayout layout_;
+    QVBoxLayout page_;
+    QHBoxLayout buttons_;
+    QTextEdit text_;
     OnyxPushButton start_;
     OnyxPushButton close_;
     SshdServer sshd_;
+    QString stdout_;
 };
 
 

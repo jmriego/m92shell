@@ -15,7 +15,7 @@ DSView::DSView(QWidget *parent)
 #else
     : QWidget(0, Qt::FramelessWindowHint)
 #endif
-    , layout_(this)
+    , page_(this)
     , start_(tr("Start"), 0)
     , close_(tr("Close"), 0)
 {
@@ -113,26 +113,22 @@ bool DSView::eventFilter(QObject *obj, QEvent *e)
 
 void DSView::paintEvent(QPaintEvent *)
 {
-    QPainter painter(this);
-    painter.fillRect(rect(), Qt::white);
-    QFont font = QApplication::font();
-    font.setPointSize(34);
-    painter.setFont(font);
-    QFontMetrics fm(font);
+    update();
+    // QPainter painter(this);
+    // painter.fillRect(rect(), Qt::white);
+    // QFont font = QApplication::font();
+    // font.setPointSize(18);
+    // painter.setFont(font);
+    // QFontMetrics fm(font);
 
-    painter.drawText(QRect(0, BUTTON_HEIGHT, width(), height() - BUTTON_HEIGHT), Qt::AlignHCenter | Qt::AlignTop, currentState());
+    // painter.drawText(QRect(10, 10, width()-20, height() - BUTTON_HEIGHT), Qt::AlignLeft | Qt::AlignTop, stdout_);
 
-    int SPACING = 20;
-    QImage image;
-    image.load(":/images/connection.png");
-    int x = (width() - image.width()) / 2;
-    int y = height() - BUTTON_HEIGHT - image.height() - SPACING;
-    painter.drawImage(QPoint(x, y), image);
 }
 
 void DSView::onStartClicked()
 {
     configNetwork();
+    connect(&sshd_, SIGNAL(valueChanged(QString)), this, SLOT(onStandardOutput(QString)));
     sshd_.start();
     update();
     onyx::screen::watcher().enqueue(this, onyx::screen::ScreenProxy::GC);
@@ -147,8 +143,13 @@ void DSView::onCloseClicked()
 
 void DSView::createLayout()
 {
-    layout_.addWidget(&start_, 0, Qt::AlignBottom);
-    layout_.addWidget(&close_, 0, Qt::AlignBottom);
+    text_.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    text_.setFixedHeight(1130);
+    text_.setFontPointSize(18);
+    buttons_.addWidget(&start_, 0, Qt::AlignBottom);
+    buttons_.addWidget(&close_, 0, Qt::AlignBottom);
+    page_.addWidget(&text_, 0, Qt::AlignTop);
+    page_.addLayout(&buttons_, 1);
 
     start_.setFixedHeight(BUTTON_HEIGHT);
     close_.setFixedHeight(BUTTON_HEIGHT);
@@ -174,30 +175,10 @@ bool DSView::exec(const QStringList & args)
     return true;
 }
 
-QString DSView::currentState()
+void DSView::onStandardOutput(QString newValue)
 {
-    QString result(tr("Ssh Server is not running.\nClick Start to lunch server."));
-    QList<QNetworkInterface> all = QNetworkInterface::allInterfaces();
-    foreach(QNetworkInterface ni, all)
-    {
-        if (ni.flags().testFlag(QNetworkInterface::IsUp) && !ni.addressEntries().empty())
-        {
-#ifndef WIN32
-            if (ni.name().contains("eth", Qt::CaseInsensitive) ||
-                ni.name().contains("wlan", Qt::CaseInsensitive))
-            {
-#endif
-                foreach(QNetworkAddressEntry entry, ni.addressEntries())
-                {
-                    result = tr("SSH Server: %1");
-                    result = result.arg(entry.ip().toString());
-                    return result;
-                }
-#ifndef WIN32
-            }
-#endif
-        }
-    }
-    return result;
+    stdout_ = newValue;
+    qDebug() << stdout_;
+    text_.setText(stdout_);
+    onyx::screen::instance().updateWidget(0, onyx::screen::ScreenProxy::GC);
 }
-

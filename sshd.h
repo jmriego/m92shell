@@ -15,14 +15,21 @@ class SshdServer : public QObject
 public:
     SshdServer();
     ~SshdServer();
+    QProcess *proc_;
 
 public Q_SLOTS:
     bool start();
     bool stop();
     bool isRunning();
+    QString getStandardOutput();
+    void refreshConsole();
+
+Q_SIGNALS:
+    void valueChanged(QString newValue);
 
 private:
     QMap<QString, QString> options_;
+    QString stdout_;
 };
 
 #endif
