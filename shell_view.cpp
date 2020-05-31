@@ -1,5 +1,5 @@
 #include <QtGui/QtGui>
-#include "sshd_view.h"
+#include "shell_view.h"
 #include "onyx/screen/screen_update_watcher.h"
 
 #include "onyx/wireless/wifi_dialog.h"
@@ -128,15 +128,15 @@ void DSView::paintEvent(QPaintEvent *)
 void DSView::onStartClicked()
 {
     configNetwork();
-    connect(&sshd_, SIGNAL(valueChanged(QString)), this, SLOT(onStandardOutput(QString)));
-    sshd_.start();
+    connect(&shell_, SIGNAL(valueChanged(QString)), this, SLOT(onStandardOutput(QString)));
+    shell_.start();
     update();
     onyx::screen::watcher().enqueue(this, onyx::screen::ScreenProxy::GC);
 }
 
 void DSView::onCloseClicked()
 {
-    sshd_.stop();
+    shell_.stop();
     sys::SysStatus::instance().stopWpaSupplicant();
     qApp->exit();
 }

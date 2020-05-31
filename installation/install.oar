@@ -1,0 +1,12 @@
+#!/bin/sh
+
+mkdir -p /usr/local/etc
+mkdir -p /usr/local/bin
+
+mkdir /usr/share/gui_shell/apps/m92shell
+cd `dirname $0`
+cp -f m92shell /usr/local/bin/
+cp -f m92shell.oar /usr/local/bin/
+cp -f m92shell_start.sh /usr/local/bin/
+cp -f manifest.xml calibre.png /usr/share/gui_shell/apps/m92shell/
+reboot

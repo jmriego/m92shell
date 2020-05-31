@@ -1,11 +1,11 @@
-#ifndef SSHD_APPLICATION_H_
-#define SSHD_APPLICATION_H_
+#ifndef SHELL_APPLICATION_H_
+#define SHELL_APPLICATION_H_
 
 #include "onyx/base/base.h"
 #include "onyx/ui/ui.h"
 #include "onyx/base/dbus.h"
 
-#include "sshd_view.h"
+#include "shell_view.h"
 
 
 class DSApplication : public QApplication

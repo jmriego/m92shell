@@ -1,7 +1,7 @@
 #include <QtGui>
 
 #include "onyx/sys/sys_status.h"
-#include "sshd_application.h"
+#include "shell_application.h"
 
 
 

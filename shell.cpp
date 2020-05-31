@@ -2,45 +2,45 @@
 
 #include "onyx/data/configuration.h"
 #include "onyx/ui/languages.h"
-#include "sshd.h"
+#include "shell.h"
 
-SshdServer::SshdServer()
+ShellServer::ShellServer()
 {
 }
 
-SshdServer::~SshdServer()
+ShellServer::~ShellServer()
 {
 }
 
-bool SshdServer::start()
+bool ShellServer::start()
 {
     proc_ = new QProcess();
     stdout_ = tr("Starting the script...");
     connect(proc_, SIGNAL(readyReadStandardOutput()), this, SLOT(refreshConsole()));
     connect(proc_, SIGNAL(readyReadStandardError()), this, SLOT(refreshConsole()));
-    proc_->start("/media/flash/test_script.sh");
+    proc_->start("/usr/local/bin/m92shell_start.sh");
     return true;
 }
 
-bool SshdServer::stop()
+bool ShellServer::stop()
 {
     proc_->kill();
     return true;
 }
 
-bool SshdServer::isRunning()
+bool ShellServer::isRunning()
 {
     return true;
 }
 
-void SshdServer::refreshConsole()
+void ShellServer::refreshConsole()
 {
     stdout_ += proc_->readAllStandardOutput();
     stdout_ += proc_->readAllStandardError();
     emit valueChanged(stdout_);
 }
 
-QString SshdServer::getStandardOutput()
+QString ShellServer::getStandardOutput()
 {
     return stdout_;
 }

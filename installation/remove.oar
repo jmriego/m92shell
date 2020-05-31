@@ -1,0 +1,7 @@
+#!/bin/sh
+
+rm -rf /usr/share/gui_shell/apps/m92shell
+rm -f /usr/local/bin/m92shell
+rm -f /usr/local/bin/m92shell.oar
+rm -f /usr/local/bin/m92shell_start.sh
+reboot

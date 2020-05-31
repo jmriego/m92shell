@@ -1,6 +1,6 @@
 #include "onyx/data/configuration.h"
 #include "onyx/ui/languages.h"
-#include "sshd_application.h"
+#include "shell_application.h"
 
 
 DSApplication::DSApplication(int &argc, char **argv)
@@ -9,7 +9,7 @@ DSApplication::DSApplication(int &argc, char **argv)
     ui::loadTranslator(QLocale::system().name());
 
     QCoreApplication::setOrganizationName(QLatin1String("Onyx"));
-    QCoreApplication::setApplicationName(QLatin1String("SSH Server"));
+    QCoreApplication::setApplicationName(QLatin1String("RSync Calibre"));
 }
 
 DSApplication::~DSApplication(void)

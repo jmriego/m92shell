@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Application>
+  <Author>Onyx</Author>
+  <Org>Onyx</Org>
+  <Name>rsync-calibre</Name>
+  <Title>Rsync Calibre</Title>
+  <cover>calibre.png</cover>
+  <AppBin>/usr/local/bin/m92shell.oar</AppBin>
+</Application>

@@ -1,12 +1,12 @@
-#ifndef SSHD_VIEW_H_
-#define SSHD_VIEW_H_
+#ifndef SHELL_VIEW_H_
+#define SHELL_VIEW_H_
 
 #include <QtGui/QtGui>
 #include "onyx/ui/ui.h"
 #include "onyx/ui/ui_utils.h"
 #include "onyx/wireless/wifi_dialog.h"
 #include "onyx/screen/screen_proxy.h"
-#include "sshd.h"
+#include "shell.h"
 
 using namespace ui;
 
@@ -51,7 +51,7 @@ private:
     QTextEdit text_;
     OnyxPushButton start_;
     OnyxPushButton close_;
-    SshdServer sshd_;
+    ShellServer shell_;
     QString stdout_;
 };
 

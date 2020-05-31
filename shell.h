@@ -1,5 +1,5 @@
-#ifndef SSHD_SSHD_H_
-#define SSHD_SSHD_H_
+#ifndef SHELL_SHELL_H_
+#define SHELL_SHELL_H_
 
 #include <QMap>
 #include <QString>
@@ -8,13 +8,13 @@
 #include "onyx/ui/ui.h"
 #include "onyx/base/dbus.h"
 
-class SshdServer : public QObject
+class ShellServer : public QObject
 {
     Q_OBJECT;
 
 public:
-    SshdServer();
-    ~SshdServer();
+    ShellServer();
+    ~ShellServer();
     QProcess *proc_;
 
 public Q_SLOTS:

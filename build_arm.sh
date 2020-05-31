@@ -5,6 +5,7 @@ export ONYX_SDK_ROOT=/opt/onyx/arm
 export PKG_CONFIG_PATH=/opt/onyx/arm/lib/pkgconfig/
 export QMAKESPEC=/opt/onyx/arm/mkspecs/qws/linux-arm-g++/
 
-qmake ssh_server.pro DEFINES+=BUILD_FOR_ARM
+qmake m92shell.pro DEFINES+=BUILD_FOR_ARM
 make
-arm-linux-strip ssh_server
+arm-linux-strip m92shell
+mv m92shell installation/
