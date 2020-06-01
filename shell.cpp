@@ -35,9 +35,11 @@ bool ShellServer::isRunning()
 
 void ShellServer::refreshConsole()
 {
-    stdout_ += proc_->readAllStandardOutput();
-    stdout_ += proc_->readAllStandardError();
-    emit valueChanged(stdout_);
+    QString stdout = proc_->readAllStandardOutput();
+    QString stderr = proc_->readAllStandardError();
+    stdout_ += stdout;
+    stdout_ += stderr;
+    emit valueChanged(stdout + stderr);
 }
 
 QString ShellServer::getStandardOutput()

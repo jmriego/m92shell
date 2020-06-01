@@ -16,6 +16,7 @@ DSView::DSView(QWidget *parent)
     : QWidget(0, Qt::FramelessWindowHint)
 #endif
     , page_(this)
+    , text_(tr(""), 0)
     , start_(tr("Start"), 0)
     , close_(tr("Close"), 0)
 {
@@ -111,20 +112,6 @@ bool DSView::eventFilter(QObject *obj, QEvent *e)
     return QObject::eventFilter(obj, e);
 }
 
-void DSView::paintEvent(QPaintEvent *)
-{
-    update();
-    // QPainter painter(this);
-    // painter.fillRect(rect(), Qt::white);
-    // QFont font = QApplication::font();
-    // font.setPointSize(18);
-    // painter.setFont(font);
-    // QFontMetrics fm(font);
-
-    // painter.drawText(QRect(10, 10, width()-20, height() - BUTTON_HEIGHT), Qt::AlignLeft | Qt::AlignTop, stdout_);
-
-}
-
 void DSView::onStartClicked()
 {
     configNetwork();
@@ -143,19 +130,24 @@ void DSView::onCloseClicked()
 
 void DSView::createLayout()
 {
-    text_.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
-    text_.setFixedHeight(1130);
-    text_.setFontPointSize(18);
-    buttons_.addWidget(&start_, 0, Qt::AlignBottom);
-    buttons_.addWidget(&close_, 0, Qt::AlignBottom);
-    page_.addWidget(&text_, 0, Qt::AlignTop);
-    page_.addLayout(&buttons_, 1);
-
     start_.setFixedHeight(BUTTON_HEIGHT);
     close_.setFixedHeight(BUTTON_HEIGHT);
+    text_.setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+    text_.setFontPointSize(16);
+    page_.addWidget(&text_, 0, 0, 1, 2);
+    page_.setRowMinimumHeight(0, 1130);
+    page_.addWidget(&start_, 1, 0);
+    page_.addWidget(&close_, 1, 1);
+    this->setLayout(&page_);
+
+    text_.show();
+    start_.show();
+    close_.show();
+    this->show();
 
     connect(&start_, SIGNAL(clicked(bool)), this, SLOT(onStartClicked()));
     connect(&close_, SIGNAL(clicked(bool)), this, SLOT(onCloseClicked()));
+    onyx::screen::watcher().enqueue(this, onyx::screen::ScreenProxy::GC);
 }
 
 bool DSView::start()
@@ -177,8 +169,9 @@ bool DSView::exec(const QStringList & args)
 
 void DSView::onStandardOutput(QString newValue)
 {
-    stdout_ = newValue;
-    qDebug() << stdout_;
-    text_.setText(stdout_);
-    onyx::screen::instance().updateWidget(0, onyx::screen::ScreenProxy::GC);
+    qDebug() << newValue;
+    text_.insertPlainText(newValue);
+    update();
+    qApp->processEvents();
+    onyx::screen::instance().updateWidget(&text_, onyx::screen::ScreenProxy::GU);
 }

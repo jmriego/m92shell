@@ -4,6 +4,7 @@
 #include <QtGui/QtGui>
 #include "onyx/ui/ui.h"
 #include "onyx/ui/ui_utils.h"
+#include "onyx/ui/text_edit.h"
 #include "onyx/wireless/wifi_dialog.h"
 #include "onyx/screen/screen_proxy.h"
 #include "shell.h"
@@ -29,7 +30,6 @@ protected:
     virtual void keyReleaseEvent(QKeyEvent *ke);
     virtual void closeEvent(QCloseEvent * event);
     virtual bool eventFilter(QObject *obj, QEvent *event);
-    virtual void paintEvent(QPaintEvent *);
 
 private Q_SLOTS:
     void onStartClicked();
@@ -46,13 +46,11 @@ private:
 
 private:
     scoped_ptr<WifiDialog> conf_dialog_;
-    QVBoxLayout page_;
-    QHBoxLayout buttons_;
-    QTextEdit text_;
+    QGridLayout page_;
+    OnyxTextEdit text_;
     OnyxPushButton start_;
     OnyxPushButton close_;
     ShellServer shell_;
-    QString stdout_;
 };
 
 
