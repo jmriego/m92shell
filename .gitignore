@@ -1,0 +1,4 @@
+installation/m92shell
+*.o
+moc_*.cpp
+qrc_res.cpp
